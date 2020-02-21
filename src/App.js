@@ -2,7 +2,7 @@ import React from 'react';
 // import logo from './logo.svg';
 import './App.css';
 import hangman11 from './hangman/hangman11.png';
-import hangman10 from './hangman/hangman10.png';
+import hangman10dead from './hangman/hangman10dead.png';
 import hangman9 from './hangman/hangman9.png';
 import hangman8 from './hangman/hangman8.png';
 import hangman7 from './hangman/hangman7.png';
@@ -52,12 +52,12 @@ class App extends React.Component {
       <main>
         <header>
           <h1>Hangman Game</h1>
+          <button className='newGame' onClick={this.startGame}>
+            New Game
+          </button>
         </header>
-        <button className='newGame' onClick={this.startGame}>
-          New Game
-        </button>
         <Word
-          className='Word'
+          className='word'
           guessedLetter={this.state.guessedLetter}
           splitWord={this.state.splitWord}
           guessedWord={this.state.guessedWord}
@@ -72,7 +72,6 @@ class App extends React.Component {
           />
         )}
         <Hangman
-          className='Hangman'
           incorrectGuesses={this.state.incorrectGuesses}
           gameStarted={this.state.gameStarted}
           guessedWord={this.state.guessedWord}
@@ -135,7 +134,10 @@ class App extends React.Component {
         }
       };
     });
-    if (this.state.splitWord.indexOf(guessedLetter) === -1 && this.state.incorrectGuesses !== 10) {
+    if (
+      this.state.splitWord.indexOf(guessedLetter) === -1 &&
+      this.state.incorrectGuesses !== 10
+    ) {
       this.setState(currentState => {
         let currentGuesses = currentState.incorrectGuesses;
         currentGuesses++;
@@ -143,7 +145,7 @@ class App extends React.Component {
           incorrectGuesses: currentGuesses
         };
       });
-    } else if (this.state.incorrectGuesses !== 10){
+    } else if (this.state.incorrectGuesses !== 10) {
       //loop through split word
       //if if letter is in split word change that index of guessed word to that letter
       const wordRef = this.state.splitWord;
@@ -196,6 +198,7 @@ class Buttons extends React.Component {
     return this.state.refAlphabet.map(letter => {
       return (
         <button
+          className='letterButtons'
           key={letter}
           onClick={event => {
             this.buttonClick(event, this.props.guessLetter);
@@ -219,29 +222,29 @@ class Buttons extends React.Component {
 
 function Hangman(props) {
   if (props.gameStarted && props.guessedWord.indexOf('_') === -1) {
-    return <img src={hangman11} alt='You win!' />;
+    return <img class='hangman' src={hangman11} alt='You win!' />;
   } else if (props.incorrectGuesses === 0) {
-    return <img src={hangman0} alt='0 guesses' />;
+    return <img class='hangman' src={hangman0} alt='0 guesses' />;
   } else if (props.incorrectGuesses === 1) {
-    return <img src={hangman1} alt='1 guess' />;
+    return <img class='hangman' src={hangman1} alt='1 guess' />;
   } else if (props.incorrectGuesses === 2) {
-    return <img src={hangman2} alt='2 guesses' />;
+    return <img class='hangman' src={hangman2} alt='2 guesses' />;
   } else if (props.incorrectGuesses === 3) {
-    return <img src={hangman3} alt='3 guesses' />;
+    return <img class='hangman' src={hangman3} alt='3 guesses' />;
   } else if (props.incorrectGuesses === 4) {
-    return <img src={hangman4} alt='4 guesses' />;
+    return <img class='hangman' src={hangman4} alt='4 guesses' />;
   } else if (props.incorrectGuesses === 5) {
-    return <img src={hangman5} alt='5 guesses' />;
+    return <img class='hangman' src={hangman5} alt='5 guesses' />;
   } else if (props.incorrectGuesses === 6) {
-    return <img src={hangman6} alt='6 guesses' />;
+    return <img class='hangman' src={hangman6} alt='6 guesses' />;
   } else if (props.incorrectGuesses === 7) {
-    return <img src={hangman7} alt='7 guesses' />;
+    return <img class='hangman' src={hangman7} alt='7 guesses' />;
   } else if (props.incorrectGuesses === 8) {
-    return <img src={hangman8} alt='8 guesses' />;
+    return <img class='hangman' src={hangman8} alt='8 guesses' />;
   } else if (props.incorrectGuesses === 9) {
-    return <img src={hangman9} alt='9 guesses' />;
+    return <img class='hangman' src={hangman9} alt='9 guesses' />;
   } else if (props.incorrectGuesses === 10) {
-    return <img src={hangman10} alt='You lose' />;
+    return <img class='hangman' src={hangman10dead} alt='You lose' />;
   }
 
   {
@@ -260,20 +263,11 @@ function Word(props) {
   const newSplitWord = props.splitWord.map(letter => {
     return letter + ' ';
   });
+
   if (props.incorrectGuesses > 9 && newGuessedWord.indexOf('_ ') !== -1) {
-    return (
-      <div>
-        <p>{newSplitWord}</p> <p>YOU LOSE!</p>
-      </div>
-    );
-  } else if (props.gameStarted && newGuessedWord.indexOf('_ ') === -1) {
-    return (
-      <div>
-        <p>{newGuessedWord}</p> <p>YOU WIN!</p>
-      </div>
-    );
+    return <p class='guessedWord'>{newSplitWord}</p>;
   } else {
-    return <p>{newGuessedWord}</p>;
+    return <p class='guessedWord'>{newGuessedWord}</p>;
   }
 }
 
